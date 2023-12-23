@@ -1,0 +1,20 @@
+# Software
+MATRIX_PROB = config["PWM-SCAN"]["MATRIX_PROB"]
+MATRIX_SCAN = config["PWM-SCAN"]["MATRIX_SCAN"]
+
+rule compile_pwmscan:
+    message:
+        """
+        c99 mode
+        """
+    input:
+        prob=workflow.source_path(f"../../{MATRIX_PROB}"),
+        scan=workflow.source_path(f"../../{MATRIX_SCAN}"),
+    output:
+        compiled_prob=INSTALL_DIR + "/software/PWMScan/matrix_prob",
+        compiled_scan=INSTALL_DIR + "/software/PWMScan/matrix_scan",
+    shell:
+        """
+        gcc -std=c99 -o {output.compiled_prob} {input.prob} &&
+        gcc -std=c99 -o {output.compiled_scan} {input.scan}
+        """
