@@ -7,8 +7,8 @@ configfile: "config/config.yaml"
 
 
 # Parameters
-MATRIX_PROB = config["PWM-SCAN"]["MATRIX_PROB"]
-MATRIX_SCAN = config["PWM-SCAN"]["MATRIX_SCAN"]
+MATRIX_PROB = config["PWMScan"]["MATRIX_PROB"]
+MATRIX_SCAN = config["PWMScan"]["MATRIX_SCAN"]
 
 
 rule compile_pwmscan:
