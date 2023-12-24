@@ -1,4 +1,4 @@
 PWMScan:
-  # PWMScan software
+  # Path to uncompiled programs
   MATRIX_PROB: resources/software/PWMScan/matrix_prob.c
   MATRIX_SCAN: resources/software/PWMScan/matrix_scan.c
