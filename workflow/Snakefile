@@ -1,14 +1,23 @@
 from snakemake.utils import min_version
 
-min_version("7.32.4")
 
-
+# Configuration
 configfile: "config/config.yaml"
 
 
 # Parameters
 MATRIX_PROB = config["PWMScan"]["MATRIX_PROB"]
 MATRIX_SCAN = config["PWMScan"]["MATRIX_SCAN"]
+
+# Settings
+min_version("7.32.4")
+
+
+rule all:
+    input:
+        "resources/software/PWMScan/matrix_prob",
+        "resources/software/PWMScan/matrix_scan",
+    default_target: True
 
 
 rule compile_pwmscan:
@@ -26,7 +35,7 @@ rule compile_pwmscan:
     log:
         stdout="workflow/logs/compile_pwmscan.stdout",
         stderr="workflow/logs/compile_pwmscan.stderr",
-    threads: 2
+    threads: 1
     shell:
         """
         gcc -std=c99 -o {output.compiled_prob} {input.prob}
