@@ -5,39 +5,32 @@ from snakemake.utils import min_version
 configfile: "config/config.yaml"
 
 
-# Parameters
-MATRIX_PROB = config["PWMScan"]["MATRIX_PROB"]
-MATRIX_SCAN = config["PWMScan"]["MATRIX_SCAN"]
-
 # Settings
 min_version("7.32.4")
 
 
+# Modules
+module pwmscan:
+    snakefile:
+        "rules/pwmscan.smk"
+    config:
+        config["PWMScan"]
+
+
+# Import modules
+use rule * from pwmscan as pwmscan_*
+
+
+###
+# Rules
+###
+
+
 rule all:
-    input:
-        "resources/software/PWMScan/matrix_prob",
-        "resources/software/PWMScan/matrix_scan",
-    default_target: True
-
-
-rule compile_pwmscan:
     message:
         """
-        Compiles PWMScan. Note c99 flag.
-        Installs into resources/software by default.
+        DEPLOYING PWMScan...
         """
     input:
-        prob=workflow.source_path(f"../{MATRIX_PROB}"),
-        scan=workflow.source_path(f"../{MATRIX_SCAN}"),
-    output:
-        compiled_prob="resources/software/PWMScan/matrix_prob",
-        compiled_scan="resources/software/PWMScan/matrix_scan",
-    log:
-        stdout="workflow/logs/compile_pwmscan.stdout",
-        stderr="workflow/logs/compile_pwmscan.stderr",
-    threads: 1
-    shell:
-        """
-        gcc -std=c99 -o {output.compiled_prob} {input.prob}
-        gcc -std=c99 -o {output.compiled_scan} {input.scan}
-        """
+        rules.pwmscan_all.input,
+    default_target: True
